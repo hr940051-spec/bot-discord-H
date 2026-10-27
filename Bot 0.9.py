@@ -2319,5 +2319,9 @@ async def exibir_menu(ctx):
     await ctx.send(embed=embed, view=view)
 
 if __name__ == "__main__":
+    # Arranca o Flask numa thread separada em segundo plano
     keep_alive()
+    
+    # Arranca o bot do Discord na thread principal
     bot.run(TOKEN)
+
