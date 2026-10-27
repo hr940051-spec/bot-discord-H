@@ -2,36 +2,33 @@ import threading
 from flask import Flask
 import discord
 import os
+from discord.ext import commands  # <--- Adiciona esta linha nos imports!
 
 app = Flask('')
 
-
 @app.route('/')
 def home():
-  is_alive = "Estou online!"
-  return is_alive
-
+    return "Estou online!"
 
 def run():
-  # O Flask corre na porta 10000 exigida pelo Render
-  app.run(host='0.0.0.0', port=10000)
-
+    app.run(host='0.0.0.0', port=10000)
 
 def keep_alive():
-  t = threading.Thread(target=run)
-  t.start()
-
+    t = threading.Thread(target=run)
+    t.start()
 
 # Inicia o servidor web em segundo plano
 keep_alive()
 
-# Aqui em baixo fica o teu código normal do bot do Discord
-bot = discord.Client(intents=discord.Intents.default())
+# Configuração correta do bot com comandos e intents
+intents = discord.Intents.default()
+intents.message_content = True
 
+bot = commands.Bot(command_prefix="!", intents=intents)
 
 @bot.event
 async def on_ready():
-  print(f'Bot ligado como {bot.user}')
+    print(f'Bot ligado como {bot.user}')
 
 TOKEN = os.getenv('TOKEN')
 
